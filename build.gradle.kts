@@ -23,9 +23,15 @@ application {
 
 tasks {
     compileKotlin {
-        kotlinOptions.jvmTarget = VERSION_11.majorVersion
+        kotlinOptions {
+            jvmTarget = VERSION_11.majorVersion
+            freeCompilerArgs = freeCompilerArgs + "-Xinline-classes" + "-Xopt-in=kotlin.ExperimentalStdlibApi,kotlin.time.ExperimentalTime"
+        }
     }
+
     compileTestKotlin {
-        kotlinOptions.jvmTarget = VERSION_11.majorVersion
+        kotlinOptions {
+            jvmTarget = VERSION_11.majorVersion
+        }
     }
 }
