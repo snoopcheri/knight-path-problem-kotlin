@@ -1,5 +1,7 @@
 package name.sargon.knightpath
 
+import name.sargon.knightpath.BoardGenerator.Companion.generateBoards
+import name.sargon.knightpath.MoveGenerator.Companion.generateMoves
 import name.sargon.knightpath.NamedSquare.*
 
 fun main() {
@@ -15,7 +17,7 @@ fun main() {
         .set(D1.value)
         .set(D2.value)
 
-    val boards = BoardGenerator().generateBoards(allowedSquares, 2, 2)
+    val boards = generateBoards(allowedSquares, 2, 2)
     println("#boards = ${boards.size}")
     println("#distinct(boards) = ${boards.distinct().size}")
 
@@ -30,5 +32,5 @@ fun main() {
     )
 
     println(board)
-    println(MoveGenerator().generateMoves(board))
+    println(generateMoves(board))
 }
