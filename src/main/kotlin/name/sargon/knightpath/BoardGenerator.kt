@@ -10,31 +10,34 @@ class BoardGenerator {
         var boards = listOf(Board(Bitboard(), Bitboard(), allowedSquares))
 
         repeat(whiteKnightsCount) {
-            boards = boardsWithAddedKnight(boards, WHITE)
+            boards = boardsWithKnight(boards, WHITE)
         }
 
         repeat(blackKnightsCount) {
-            boards = boardsWithAddedKnight(boards, BLACK)
+            boards = boardsWithKnight(boards, BLACK)
         }
 
         return boards
     }
 
-    private fun boardsWithAddedKnight(boards: List<Board>, colour: Colour): List<Board> {
-        val newBoards = mutableListOf<Board>()
-
-        for (board in boards) {
-            val allowed = board.allowedSquares
-            val occupied = board.knights()
-            val empty = allowed.xor(occupied)
-            val availableSquares = empty.iterator()
-            while (availableSquares.hasNext()) {
-                val square = availableSquares.next()
-                newBoards.add(board.withKnight(square, colour))
-            }
-        }
-
-        return newBoards
-
+    private fun boardsWithKnight(boards: List<Board>, colour: Colour): List<Board> {
+        return boards
+            .map { board -> boardsWithKnight(board, colour) }
+            .flatten()
     }
+
+    private fun boardsWithKnight(board: Board, colour: Colour): List<Board> {
+        return emptySquares(board)
+            .map { square -> board.withKnight(square, colour) }
+            .toList()
+    }
+
+    private fun emptySquares(board: Board): Sequence<Int> {
+        val allowed = board.allowedSquares
+        val occupied = board.knights()
+        val empty = allowed.xor(occupied)
+
+        return empty.iterator().asSequence()
+    }
+
 }
