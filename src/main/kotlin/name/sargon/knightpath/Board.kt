@@ -16,25 +16,6 @@ data class Board(val whiteKnights: Bitboard, val blackKnights: Bitboard, val all
         }
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        if (other?.javaClass != javaClass) {
-            return false
-        }
-
-        other as Board
-
-        return whiteKnights.value == other.whiteKnights.value &&
-                blackKnights.value == other.blackKnights.value
-    }
-
-    override fun hashCode(): Int {
-        return 31 * whiteKnights.value.hashCode() + blackKnights.value.hashCode()
-    }
-
     override fun toString(): String {
         val str = StringBuilder()
 
