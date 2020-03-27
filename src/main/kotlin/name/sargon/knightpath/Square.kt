@@ -90,7 +90,7 @@ enum class NamedSquare(val value:Int) {
 
     companion object {
         private val values = values()
-        fun getByValue(value: Int) = values.firstOrNull { it.value == value }
+        fun byValue(value: Int) = values.firstOrNull { it.value == value }
     }
 
 }

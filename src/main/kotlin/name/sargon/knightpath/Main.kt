@@ -21,4 +21,7 @@ fun main() {
 
     println(boards.first())
     println(boards.last())
+
+    val move = Move(A1.value, B3.value)
+    println(move)
 }
