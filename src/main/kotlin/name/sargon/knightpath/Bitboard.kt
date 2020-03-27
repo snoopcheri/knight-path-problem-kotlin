@@ -14,6 +14,14 @@ inline class Bitboard(val value: Long = 0) {
         return Bitboard(value and 1L.shl(bit).inv())
     }
 
+    fun or(other: Bitboard): Bitboard {
+        return Bitboard(value or other.value)
+    }
+
+    fun xor(other: Bitboard): Bitboard {
+        return Bitboard(value xor other.value)
+    }
+
     fun nextOne(): Int {
         val next = value.countTrailingZeroBits()
         assert(next in 0..63)

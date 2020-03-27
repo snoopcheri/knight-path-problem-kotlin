@@ -3,7 +3,7 @@ package name.sargon.knightpath
 import name.sargon.knightpath.NamedSquare.*
 
 fun main() {
-    val allowed: Bitboard = Bitboard()
+    val allowedSquares: Bitboard = Bitboard()
         .set(A1.value)
         .set(B1.value)
         .set(B2.value)
@@ -15,7 +15,10 @@ fun main() {
         .set(D1.value)
         .set(D2.value)
 
-    val squares = Squares(allowed)
+    val boards = BoardGenerator().generateBoards(allowedSquares, 2, 2)
+    println("#boards = ${boards.size}")
+    println("#distinct(boards) = ${boards.distinct().size}")
 
-    println(squares)
+    println(boards.first())
+    println(boards.last())
 }
