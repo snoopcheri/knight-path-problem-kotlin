@@ -16,6 +16,13 @@ data class Board(val whiteKnights: Bitboard, val blackKnights: Bitboard, val all
         }
     }
 
+    fun squareIsEmpty(square: Square): Boolean {
+        return Bitboard.bitIsValid(square) &&
+                allowedSquares.get(square) &&
+                !whiteKnights.get(square) &&
+                !blackKnights.get(square)
+    }
+
     override fun toString(): String {
         val str = StringBuilder()
 

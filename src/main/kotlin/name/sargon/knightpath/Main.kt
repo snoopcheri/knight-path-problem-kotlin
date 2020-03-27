@@ -22,6 +22,13 @@ fun main() {
     println(boards.first())
     println(boards.last())
 
-    val move = Move(A1.value, B3.value)
-    println(move)
+
+    val board = Board(
+        Bitboard().set(B4.value).set(C2.value),
+        Bitboard().set(A1.value).set(C1.value),
+        allowedSquares
+    )
+
+    println(board)
+    println(MoveGenerator().generateMoves(board))
 }

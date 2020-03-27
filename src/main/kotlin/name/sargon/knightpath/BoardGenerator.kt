@@ -32,12 +32,12 @@ class BoardGenerator {
             .toList()
     }
 
-    private fun emptySquares(board: Board): Sequence<Int> {
+    private fun emptySquares(board: Board): Bitboard {
         val allowed = board.allowedSquares
         val occupied = board.knights()
         val empty = allowed.xor(occupied)
 
-        return empty.iterator().asSequence()
+        return empty
     }
 
 }

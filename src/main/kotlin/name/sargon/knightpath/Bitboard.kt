@@ -1,7 +1,15 @@
 package name.sargon.knightpath
 
 
-inline class Bitboard(val value: Long = 0) {
+inline class Bitboard(val value: Long = 0): Iterable<Int> {
+
+    companion object {
+
+        fun bitIsValid(bit: Int): Boolean {
+            return bit in 0..63
+        }
+
+    }
 
     fun countOnes(): Int = value.countOneBits()
     fun get(bit: Int): Boolean = (value and 1L.shl(bit)) != 0L
@@ -33,7 +41,7 @@ inline class Bitboard(val value: Long = 0) {
         return value == 0L
     }
 
-    fun iterator(): Iterator<Int> {
+    override fun iterator(): Iterator<Int> {
         return BitIterator(this)
     }
 
