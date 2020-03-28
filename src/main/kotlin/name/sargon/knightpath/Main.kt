@@ -4,6 +4,33 @@ import name.sargon.knightpath.BoardGenerator.Companion.generateDistinctBoards
 import name.sargon.knightpath.NamedSquare.*
 
 fun main() {
+    johannesExchangeProblem()
+//    standardChessKnightExchangeProblem()
+}
+
+@Suppress("unused")
+fun standardChessKnightExchangeProblem() {
+    val allowedSquares = Bitboard(-1)
+    val allBoards = generateDistinctBoards(allowedSquares, 1, 1)
+
+    val startBoard = Board(
+        Bitboard().set(G1.value),
+        Bitboard().set(G8.value),
+        allowedSquares
+    )
+
+    val endBoard = startBoard.withSwitchedKnights()
+
+    val solver = Solver(allBoards)
+    val solution = solver.solveFor(endBoard)
+    showSolution(solution, startBoard, endBoard)
+
+    val printer = PathPrinter(solution)
+    printer.printPath(startBoard, endBoard)
+}
+
+@Suppress("unused")
+private fun johannesExchangeProblem() {
     val allowedSquares: Bitboard = Bitboard()
         .set(A1.value)
         .set(B1.value)
@@ -17,7 +44,6 @@ fun main() {
         .set(D2.value)
 
     val allBoards = generateDistinctBoards(allowedSquares, 2, 2)
-    val solver = Solver(allBoards)
 
     val startBoard = Board(
         Bitboard().set(B4.value).set(C2.value),
@@ -25,17 +51,14 @@ fun main() {
         allowedSquares
     )
 
-    val endBoard = Board(
-        Bitboard().set(A1.value).set(C1.value),
-        Bitboard().set(B4.value).set(C2.value),
-        allowedSquares
-    )
+    val endBoard = startBoard.withSwitchedKnights()
 
+    val solver = Solver(allBoards)
     val solution = solver.solveFor(endBoard)
     showSolution(solution, startBoard, endBoard)
 
-    val finder = PathFinder(solution)
-    finder.findPath(startBoard, endBoard)
+    val printer = PathPrinter(solution)
+    printer.printPath(startBoard, endBoard)
 }
 
 private fun showSolution(solution: Map<Board, Int>, from: Board, to: Board) {

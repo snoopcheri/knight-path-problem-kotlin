@@ -9,6 +9,10 @@ data class Board(val whiteKnights: Bitboard, val blackKnights: Bitboard, val all
         return whiteKnights.or(blackKnights)
     }
 
+    fun withSwitchedKnights(): Board {
+        return Board(blackKnights, whiteKnights, allowedSquares)
+    }
+
     fun withKnight(square: Square, colour: Colour): Board {
         return when (colour) {
             WHITE -> Board(whiteKnights.set(square), blackKnights, allowedSquares)

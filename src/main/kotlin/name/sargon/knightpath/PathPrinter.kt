@@ -3,15 +3,15 @@ package name.sargon.knightpath
 import name.sargon.knightpath.MoveGenerator.Companion.generateMoves
 import java.lang.String.format
 
-class PathFinder(private val depth: Map<Board, Int>) {
+class PathPrinter(private val depth: Map<Board, Int>) {
 
     var solutions = mutableListOf<Array<Move>>()
 
-    fun findPath(start: Board, end: Board) {
-        findPath(start, end, emptyArray())
+    fun printPath(start: Board, end: Board) {
+        printPath(start, end, emptyArray())
     }
 
-    private fun findPath(start: Board, end: Board, path: Array<Move>) {
+    private fun printPath(start: Board, end: Board, path: Array<Move>) {
         if (end == start) {
             storeSolution(path)
             return
@@ -20,8 +20,8 @@ class PathFinder(private val depth: Map<Board, Int>) {
         val successors = successorsOf(start, depth[start]!!)
         assert(successors.isNotEmpty())
 
-        val successor = successors.first()
-        findPath(successor.second, end, path.plus(successor.first))
+        val successor = successorWithFollowupMove(successors, path.lastOrNull())
+        printPath(successor.second, end, path.plus(successor.first))
     }
 
     private fun storeSolution(path: Array<Move>) {
@@ -37,4 +37,9 @@ class PathFinder(private val depth: Map<Board, Int>) {
             .filter { this.depth[it.second] == depth - 1 }
     }
 
+    private fun successorWithFollowupMove(successors: List<Pair<Move, Board>>, lastMove: Move?): Pair<Move, Board> {
+        return successors
+            .find { it.first.from == lastMove?.to }
+            ?: successors.first()
+    }
 }
