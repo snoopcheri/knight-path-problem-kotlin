@@ -1,5 +1,7 @@
 package name.sargon.knightpath
 
+import java.util.*
+
 class Solver(private val boards: List<Board>) {
 
     private val solutions = hashMapOf<Board, Map<Board, Int>>()
@@ -11,9 +13,10 @@ class Solver(private val boards: List<Board>) {
 
     private fun solve(initialBoard: Board): Map<Board, Int> {
         val unsolved = boards.toMutableList()
-        unsolved.remove(initialBoard)
-        val solved = hashMapOf(initialBoard to 0)
+        val solved = hashMapOf<Board, Int>()
         var depth = 0
+
+        markAsSolved(initialBoard, 0, unsolved, solved)
 
         while (true) {
             print("depth=${depth}, #unsolved=${unsolved.size}, #solved=${solved.size}")
@@ -40,11 +43,7 @@ class Solver(private val boards: List<Board>) {
             }
 
             for (board in solvedAtDepth) {
-                assert(unsolved.contains(board))
-                assert(!solved.containsKey(board))
-
-                unsolved.remove(board)
-                solved[board] = depth + 1
+                markAsSolved(board, depth + 1, unsolved, solved)
             }
 
             depth++
@@ -56,6 +55,14 @@ class Solver(private val boards: List<Board>) {
     private fun successorsOf(board: Board): List<Board> {
         return MoveGenerator.generateMoves(board)
             .map { move -> board.afterMove(move) }
+    }
+
+    private fun markAsSolved(board: Board, depth: Int, unsolved: MutableList<Board>, solved: HashMap<Board, Int>) {
+        assert(unsolved.contains(board))
+        assert(!solved.containsKey(board))
+
+        unsolved.remove(board)
+        solved[board] = depth
     }
 
 }
