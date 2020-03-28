@@ -6,17 +6,17 @@ class Solver(private val boards: List<Board>) {
 
     private val solutions = hashMapOf<Board, Map<Board, Int>>()
 
-    fun solveFor(initialBoard: Board): Map<Board, Int> {
-        println("Solving for board\n${initialBoard}")
-        return solutions.computeIfAbsent(initialBoard) { board -> solve(board) }
+    fun solveFor(endBoard: Board): Map<Board, Int> {
+        println("Solving for board\n${endBoard}")
+        return solutions.computeIfAbsent(endBoard) { board -> solve(board) }
     }
 
-    private fun solve(initialBoard: Board): Map<Board, Int> {
+    private fun solve(endBoard: Board): Map<Board, Int> {
         val unsolved = boards.toMutableList()
         val solved = hashMapOf<Board, Int>()
         var depth = 0
 
-        markAsSolved(initialBoard, 0, unsolved, solved)
+        markAsSolved(endBoard, 0, unsolved, solved)
 
         while (true) {
             print("depth=${depth}, #unsolved=${unsolved.size}, #solved=${solved.size}")

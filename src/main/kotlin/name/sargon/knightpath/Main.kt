@@ -19,20 +19,23 @@ fun main() {
     val allBoards = generateDistinctBoards(allowedSquares, 2, 2)
     val solver = Solver(allBoards)
 
-    val initialBoard = Board(
+    val startBoard = Board(
         Bitboard().set(B4.value).set(C2.value),
         Bitboard().set(A1.value).set(C1.value),
         allowedSquares
     )
 
-    val boardToReach = Board(
+    val endBoard = Board(
         Bitboard().set(A1.value).set(C1.value),
         Bitboard().set(B4.value).set(C2.value),
         allowedSquares
     )
 
-    val solution = solver.solveFor(boardToReach)
-    showSolution(solution, initialBoard, boardToReach)
+    val solution = solver.solveFor(endBoard)
+    showSolution(solution, startBoard, endBoard)
+
+    val finder = PathFinder(solution)
+    finder.findPath(startBoard, endBoard)
 }
 
 private fun showSolution(solution: Map<Board, Int>, from: Board, to: Board) {
