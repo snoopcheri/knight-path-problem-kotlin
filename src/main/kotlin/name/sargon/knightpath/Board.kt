@@ -16,6 +16,27 @@ data class Board(val whiteKnights: Bitboard, val blackKnights: Bitboard, val all
         }
     }
 
+    fun afterMove(move: Move): Board {
+        assert(allowedSquares.get(move.from))
+        assert(allowedSquares.get(move.to))
+        assert(knights().get(move.from))
+        assert(!knights().get(move.to))
+
+        if (whiteKnights.get(move.from)) {
+            return Board(
+                whiteKnights.cleared(move.from).set(move.to),
+                blackKnights,
+                allowedSquares
+            )
+        } else {
+            return Board(
+                whiteKnights,
+                blackKnights.cleared(move.from).set(move.to),
+                allowedSquares
+            )
+        }
+    }
+
     fun squareIsEmpty(square: Square): Boolean {
         return Bitboard.bitIsValid(square) &&
                 allowedSquares.get(square) &&

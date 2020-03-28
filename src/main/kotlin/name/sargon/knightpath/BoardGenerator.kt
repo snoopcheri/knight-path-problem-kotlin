@@ -6,7 +6,7 @@ import name.sargon.knightpath.Board.Colour.WHITE
 
 class BoardGenerator {
     companion object {
-        fun generateBoards(allowedSquares: Bitboard, whiteKnightsCount: Int, blackKnightsCount: Int): List<Board> {
+        fun generateDistinctBoards(allowedSquares: Bitboard, whiteKnightsCount: Int, blackKnightsCount: Int): List<Board> {
             var boards = listOf(Board(Bitboard(), Bitboard(), allowedSquares))
 
             repeat(whiteKnightsCount) {
@@ -17,7 +17,7 @@ class BoardGenerator {
                 boards = boardsWithKnight(boards, BLACK)
             }
 
-            return boards
+            return boards.distinct()
         }
 
         private fun boardsWithKnight(boards: List<Board>, colour: Colour): List<Board> {

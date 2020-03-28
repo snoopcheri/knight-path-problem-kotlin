@@ -1,7 +1,6 @@
 package name.sargon.knightpath
 
-import name.sargon.knightpath.BoardGenerator.Companion.generateBoards
-import name.sargon.knightpath.MoveGenerator.Companion.generateMoves
+import name.sargon.knightpath.BoardGenerator.Companion.generateDistinctBoards
 import name.sargon.knightpath.NamedSquare.*
 
 fun main() {
@@ -17,20 +16,32 @@ fun main() {
         .set(D1.value)
         .set(D2.value)
 
-    val boards = generateBoards(allowedSquares, 2, 2)
-    println("#boards = ${boards.size}")
-    println("#distinct(boards) = ${boards.distinct().size}")
+    val allBoards = generateDistinctBoards(allowedSquares, 2, 2)
+    val solver = Solver(allBoards)
 
-    println(boards.first())
-    println(boards.last())
-
-
-    val board = Board(
+    val initialBoard = Board(
         Bitboard().set(B4.value).set(C2.value),
         Bitboard().set(A1.value).set(C1.value),
         allowedSquares
     )
 
-    println(board)
-    println(generateMoves(board))
+    val boardToReach = Board(
+        Bitboard().set(A1.value).set(C1.value),
+        Bitboard().set(B4.value).set(C2.value),
+        allowedSquares
+    )
+
+    val solution = solver.solveFor(boardToReach)
+    showSolution(solution, initialBoard, boardToReach)
+}
+
+private fun showSolution(solution: Map<Board, Int>, from: Board, to: Board) {
+    println("From board\n${from}")
+    println("To board\n${to}")
+
+    if (solution.containsKey(from)) {
+        println("#steps required = ${solution.get(from)}")
+    } else {
+        println("No path found")
+    }
 }
