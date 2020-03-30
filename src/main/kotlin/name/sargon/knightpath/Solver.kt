@@ -1,6 +1,8 @@
 package name.sargon.knightpath
 
 import java.util.*
+import kotlin.system.measureTimeMillis
+import kotlin.time.milliseconds
 
 class Solver(private val boards: List<Board>) {
 
@@ -12,7 +14,7 @@ class Solver(private val boards: List<Board>) {
     }
 
     private fun solve(endBoard: Board): Map<Board, Int> {
-        val unsolved = boards.toMutableList()
+        val unsolved = boards.toMutableSet()
         val solved = hashMapOf<Board, Int>()
         var depth = 0
 
@@ -23,20 +25,22 @@ class Solver(private val boards: List<Board>) {
 
             val solvedAtDepth = mutableListOf<Board>()
 
-            for (board in unsolved) {
-                val successors = successorsOf(board)
+            val duration = (measureTimeMillis {
+                for (board in unsolved) {
+                    val successors = successorsOf(board)
 
-                val minDepth = successors
-                    .mapNotNull { solved[it] }
-                    .min()
+                    val minDepth = successors
+                        .mapNotNull { solved[it] }
+                        .min()
 
-                if (minDepth != null) {
-                    assert(minDepth == depth)
-                    solvedAtDepth.add(board)
+                    if (minDepth != null) {
+                        assert(minDepth == depth)
+                        solvedAtDepth.add(board)
+                    }
                 }
-            }
+            }).milliseconds
 
-            println(" -> found ${solvedAtDepth.size} new solutions")
+            println(" -> found ${solvedAtDepth.size} new solutions in $duration")
 
             if (solvedAtDepth.isEmpty()) {
                 break
@@ -57,7 +61,7 @@ class Solver(private val boards: List<Board>) {
             .map { move -> board.afterMove(move) }
     }
 
-    private fun markAsSolved(board: Board, depth: Int, unsolved: MutableList<Board>, solved: HashMap<Board, Int>) {
+    private fun markAsSolved(board: Board, depth: Int, unsolved: MutableSet<Board>, solved: HashMap<Board, Int>) {
         assert(unsolved.contains(board))
         assert(!solved.containsKey(board))
 
