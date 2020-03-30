@@ -11,11 +11,11 @@ fun main() {
 @Suppress("unused")
 fun standardChessKnightExchangeProblem() {
     val allowedSquares = Bitboard(-1)
-    val allBoards = generateDistinctBoards(allowedSquares, 1, 1)
+    val allBoards = generateDistinctBoards(allowedSquares, 2, 2)
 
     val startBoard = Board(
-        Bitboard().set(G1.value),
-        Bitboard().set(G8.value),
+        Bitboard().set(G1.value).set(B1.value),
+        Bitboard().set(G8.value).set(B8.value),
         allowedSquares
     )
 

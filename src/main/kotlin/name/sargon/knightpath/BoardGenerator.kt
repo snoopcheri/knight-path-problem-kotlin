@@ -3,21 +3,29 @@ package name.sargon.knightpath
 import name.sargon.knightpath.Board.Colour
 import name.sargon.knightpath.Board.Colour.BLACK
 import name.sargon.knightpath.Board.Colour.WHITE
+import kotlin.system.measureTimeMillis
+import kotlin.time.milliseconds
 
 class BoardGenerator {
     companion object {
         fun generateDistinctBoards(allowedSquares: Bitboard, whiteKnightsCount: Int, blackKnightsCount: Int): List<Board> {
             var boards = listOf(Board(Bitboard(), Bitboard(), allowedSquares))
+            var distinctBoards = emptyList<Board>()
+            val duration = (measureTimeMillis {
+                repeat(whiteKnightsCount) {
+                    boards = boardsWithKnight(boards, WHITE)
+                }
 
-            repeat(whiteKnightsCount) {
-                boards = boardsWithKnight(boards, WHITE)
-            }
+                repeat(blackKnightsCount) {
+                    boards = boardsWithKnight(boards, BLACK)
+                }
 
-            repeat(blackKnightsCount) {
-                boards = boardsWithKnight(boards, BLACK)
-            }
+                distinctBoards = boards.distinct()
+            }).milliseconds
 
-            return boards.distinct()
+            println("Generated ${boards.size} boards (#distinct=${distinctBoards.size}) in $duration")
+
+            return distinctBoards
         }
 
         private fun boardsWithKnight(boards: List<Board>, colour: Colour): List<Board> {
